@@ -1,0 +1,74 @@
+struct PointLight
+{
+	vec3 Position;
+	float Range;
+	vec4 Diffuse;
+	vec4 Specular;
+	vec3 Att;
+	float padd;
+}; 
+struct DirLight
+{
+	vec3 Direction;
+	vec4 Diffuse;
+	vec4 Specular;
+	vec4 Ambient;
+};
+ struct Material
+{
+	vec4 Diffuse;
+	vec4 Ambient;
+	vec4 Specular;
+};
+
+void CalcPointLight(in Material mat, in PointLight light, in vec3 normal, in vec3 posW, in vec3 eyePos, inout vec4 fragColor)
+{
+	float dist = distance(posW, light.Position);
+	if(dist < light.Range)
+	{	
+		//attenuation
+		float att = (1 / light.Att.x + light.Att.y * dist + light.Att.z * dist * dist); 
+		vec3 lightDir = normalize(light.Position - posW);
+		float diff;
+		float spec;
+		vec4 Ambient,Diffuse,Specular;
+		//half lambert diffuse shading
+		diff = dot(normal, -lightDir) * 0.5 + 0.5;
+		diff *= att;
+		if(dot(normal,-lightDir) < 0.0){
+			//wrong side of the light add no specular color
+			spec = 0.0;
+		} else {
+			vec3 reflected = reflect(lightDir,normal);
+			vec3 toEye = posW - eyePos;
+			spec = max(0.0,dot(toEye,reflected));
+			spec = pow(spec,mat.Specular.w); // to the power of shiny!
+			spec *= att;
+		}
+		Ambient = light.Ambient;
+		Diffuse = light.Diffuse * mat.Diffuse * diff;
+		Specular = light.Specular * mat.Specular * spec;
+		fragColor += (Diffuse + Ambient + Specular);
+	}
+	else
+	{
+		fragColor += vec4(0);
+	}
+}
+
+vec4 CalcDirLight(in Material mat, in PointLight light, in vec3 normal, in vec3 posW, in vec3 eyePos)
+{
+	vec4 Ambient;
+	vec4 Diffuse;
+	vec4 Specular;
+	float diff;
+	//half lambert diffuse shading
+	diff = dot(normal,normalize(-light.Direction)) * 0.5f + 0.5f;
+	vec3 reflected = reflect(normalize(light.Direction),normal);
+	float spec = max(0.0f,dot(toEye,normalize(reflected)));
+	spec = pow(spec,material.Specular.w);
+	Ambient = light.Ambient;
+	Diffuse = light.Diffuse * mat.Diffuse * diff;
+	Specular = light.Specular * mat.Specular * spec;
+	return Ambient + Diffuse + Specular;
+}

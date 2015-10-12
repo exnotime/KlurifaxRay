@@ -1,0 +1,98 @@
+struct Ray
+{
+	vec4 o;
+	vec4 d;
+};
+	
+struct Sphere
+{
+	vec3 c;
+	float r;
+	vec4 Color;
+};
+
+struct Triangle{
+	vec4 p0;
+	vec4 p1;
+	vec4 p2;
+	vec4 Color;
+};
+
+struct AABB{
+	vec3 Bounds[2];
+	vec4 Color;
+};
+
+struct Vertex{
+	vec4 Position;
+	vec4 Normal;
+	vec4 TexCoord;
+	vec4 Tangent;
+};
+
+struct HitData{
+	vec4 Color;
+	float Depth;
+	vec3 Normal;
+	vec3 Tangent;
+	vec2 uv;
+	bool Hit;
+	int DiffuseTex;
+	int NormalTex;
+};
+
+struct PointLight
+{
+	vec3 Position;
+	float Range;
+	vec4 Diffuse;
+	vec4 Specular;
+	vec4 Ambient;
+	vec3 Att;
+	float padd;
+};
+
+struct DirLight
+{
+	vec4 Direction;
+	vec4 Diffuse;
+	vec4 Specular;
+	vec4 Ambient;
+};
+struct SpotLight
+{
+	vec3 Direction;
+	float Cutoff; //angle of the light, store as cosine
+	vec4 Diffuse;
+	vec4 Specular;
+	vec4 Ambient;
+	vec3 Att;
+	float Range;
+	vec3 Position;
+	float SpotExp; // falloff from center of spot
+};
+
+struct SurfaceMaterial{
+	vec4 BaseColorDiffuse;
+	vec4 ReflectedColorSpecular;
+	vec4 FresnelGlossMetalPower;
+};
+/*
+struct Mesh{
+	uint VertexBufferOffset;
+	uint IndexBufferOffset;
+	uint Indices;
+	uint Material;
+};
+*/
+struct Model{
+	ivec4 IndexVertexSizeISizeV;
+	ivec4 MaterialSizeM;
+	
+	vec4 ModelMinBounds;
+	vec4 ModelMaxBounds;
+	ivec4 Meshes[20]; //Mesh struct broken down to 5 uints
+	ivec4 MeshTextures[20];
+	vec4 MeshMinBounds[20];
+	vec4 MeshMaxBounds[20];
+};

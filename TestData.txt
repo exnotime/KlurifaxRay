@@ -1,0 +1,47 @@
+Tid mäts i ms
+
+Default: 42ms average of 100
+640x480
+662 model tris
+2 bounces
+2 lights (1 point, 1 dir)
+8x8 per block
+1x super sampling
+6 spheres
+13 triangles (aabb + 1 tri)
+
+Screen resolution: average of 10
+320x240: 12ms
+640x480: 42ms
+1200:800: 116ms
+1600:1200: 242ms
+
+Trace Depth: average of 10
+1: 24ms
+2: 42ms
+4: 77ms
+8: 183ms
+
+Number of lights: average of 10
+2: 42ms
+4: 54ms
+8: 82ms
+16: 144ms
+
+Number of triangles: average of 10
+44: 21ms
+662: 42ms
+2865: 55ms
+4597: 212ms
+(17537): 607ms
+
+Threads per block: average of 10 (second stage shader only)
+4x4: 110ms
+8x8: 42ms
+16x16: 43ms
+32x32: 54ms
+
+SuperSampling:
+1: 42ms
+2: 157ms
+4: 613ms

@@ -1,0 +1,62 @@
+newmtl blinn2SG
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lucina_Head_diff.tga
+bump Lucina_Head_norm.tga -bm 1
+Ni 1.00
+Ks 0.00 0.00 0.00
+newmtl blinn3SG
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lucina_EyeR_diff.tga
+Ni 1.00
+Ks 1.00 1.00 1.00
+newmtl eyeL_matSG
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lucina_EyeL_diff.tga
+Ni 1.00
+Ks 1.00 1.00 1.00
+newmtl hair_back:RetopoSurface1_004
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lucina_Hair_diff.tga
+bump Lucina_Hair_norm.tga -bm 1
+Ni 1.00
+Ks 0.00 0.00 0.00
+Ns 98.04
+newmtl lambert2SG
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lucina_lashes_diff.tga
+Ni 1.00
+newmtl pasted__baked_baked_polySurface4_blinnSG_bodySG_bodySG
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lucina_Body_diff.tga
+bump Lucina_Body_norm.tga -bm 1
+Ni 1.00
+Ks 0.00 0.00 0.00
+Ns 18.00
+newmtl phong1SG
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Lucina_falchion_diff.tga
+bump Lucina_falchion_norm.tga -bm 1
+Ni 1.00
+Ks 0.00 0.00 0.00
+Ns 18.00

@@ -1,0 +1,99 @@
+vec4 CalcPointLight(in SurfaceMaterial mat, in PointLight light, in vec3 normal, in vec3 posW, in vec3 eyePos, in float roughness)
+{
+	vec3 lightDir = posW - light.Position;
+	normal = normalize(normal);
+	float dist = length(lightDir);
+	if(dist > light.Range)
+	{
+		return vec4(0);
+	} 
+	lightDir = normalize(lightDir);
+	//attenuation
+	float att = 1 / (light.Att.x + light.Att.y * dist + light.Att.z * dist * dist); 
+	float diff = 0;
+	float spec = 0;
+	vec4 Diffuse,Specular;
+	//half lambert diffuse shading
+	float ndotl = dot(normal, -lightDir);
+	diff = ndotl;
+	//normal lambert shading
+	//diff = max(0, dot(-lightDir,normal));
+
+	if(ndotl > 0){
+		vec3 toEye = normalize(eyePos - posW);
+		vec3 reflected = reflect(lightDir,normal);
+		spec = max(0.0 , dot(toEye,reflected));
+		spec = pow(spec,mat.FresnelGlossMetalPower.w); // to the power of shiny!
+		//schlicks fresnel aproximation
+		vec3 halfWayVector = normalize(toEye + lightDir);
+		float hdotl = max(dot(lightDir,halfWayVector),0);
+		float fresnel = mat.FresnelGlossMetalPower.x + (1.0f - mat.FresnelGlossMetalPower.x) * pow(1.0 - hdotl,5.0f);
+		spec *= fresnel;
+	}
+	Diffuse = light.Diffuse * mat.BaseColorDiffuse.w * diff * att;
+	Specular = light.Specular * mat.ReflectedColorSpecular.w * spec * att;
+	return light.Ambient + Diffuse + Specular;
+}
+
+vec4 CalcDirLight(in SurfaceMaterial mat, in DirLight light, in vec3 normal, in vec3 posW, in vec3 eyePos, in float roughness)
+{
+	vec4 Ambient;
+	vec4 Diffuse;
+	vec4 Specular;
+	float diff = 0;
+	float spec = 0;
+	vec3 lightDir = normalize(light.Direction.xyz);
+	//half lambert diffuse shading
+	float ndotl = dot(normal, -lightDir);
+	diff = ndotl * 0.5f + 0.5f;
+	//normal lambert shading
+	//diff = max(0, dot(-lightDir,normal));
+
+	if(ndotl > 0){
+		vec3 toEye = normalize(eyePos - posW);
+		vec3 reflected = reflect(lightDir,normal);
+		spec = max(0.0 , dot(toEye,reflected));
+		spec = pow(spec,mat.FresnelGlossMetalPower.w); // to the power of shiny!
+		//schlicks fresnel aproximation
+		vec3 halfWayVector = normalize(toEye + lightDir);
+		float hdotl = max(dot(lightDir,halfWayVector),0);
+		float fresnel = mat.FresnelGlossMetalPower.x + (1.0f - mat.FresnelGlossMetalPower.x) * pow(1.0 - hdotl,5.0f);
+		spec *= fresnel;
+	}
+	Diffuse = light.Diffuse * mat.BaseColorDiffuse.w * diff;
+	Specular = light.Specular * mat.ReflectedColorSpecular.w * spec * roughness;
+	return light.Ambient + Diffuse + Specular;
+
+}
+/*
+vec4 CalcSpotLight(in SurfaceMaterial mat, in SpotLight light, in vec3 normal, in vec3 posW, in vec3 eyePos, in float roughness)
+{
+	vec4 Diffuse;
+	vec4 Specular;
+	vec3 lightDir = light.Position - posW;
+	float dist = length(lightDir);
+	lightDir  = normalize(lightDir);
+	float att = 1 / (light.Att.x + light.Att.y * dist + light.Att.z * dist * dist); 
+	float spotCos = dot(lightDir,normalize(light.Direction));
+	if(spotCos < light.Cutoff){
+		return vec4(0,0,0,0);
+	}else{
+		att *= pow(spotCos,light.SpotExp);
+	}
+	float diff = 0;
+	float spec = 0;
+	//half lambert diffuse shading
+	diff = dot(normal, -lightDir) * 0.5 + 0.5;
+	//normal phong shading
+	//diff = max(0,dot(normal,-lightDir));
+	if(dot(normal, -lightDir) > 0){
+		vec3 reflected = reflect(lightDir,normal);
+		vec3 toEye = normalize(posW - eyePos);
+		spec = max(0.0,dot(toEye,normalize(reflected)));
+		spec = pow(spec,mat.SpecularPower); // to the power of shiny!
+	}
+	Diffuse = light.Diffuse * mat.Diffuse * diff * att;
+	Specular = light.Specular * mat.Specular * spec * roughness * att;
+	return (light.Ambient + Diffuse + Specular) ;
+}
+*/
